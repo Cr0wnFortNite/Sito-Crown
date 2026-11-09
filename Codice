@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crown - Official Hub</title>
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEMING (Ultra-fast Native Tokens)
+           ========================================================================== */
+        :root {
+            --bg-main: #0a0b10;
+            --bg-card: #12141d;
+            --bg-card-hover: #1a1d2a;
+            --bg-input: #161824;
+            --border-color: #232738;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-glow: rgba(139, 92, 246, 0.2);
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --bg-input: #e2e8f0;
+            --border-color: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-glow: rgba(139, 92, 246, 0.1);
+        }
+
+        /* Prevent layout shift & enable GPU layers */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Disable animations globally if user prefers or setting toggled */
+        body.no-anim *, body.no-anim *::before, body.no-anim *::after {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        /* ==========================================================================
+           2. LAYOUT & UTILITIES
+           ========================================================================== */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        section {
+            padding: 40px 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            items-center: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform var(--transition-fast), background-color var(--transition-fast);
+            will-change: transform;
+        }
+        .btn:active { transform: scale(0.97); }
+
+        .btn-primary { background-color: var(--accent-purple); color: #ffffff; }
+        .btn-primary:hover { background-color: var(--accent-purple-hover); }
+
+        .btn-yt { background-color: var(--accent-red); color: #ffffff; }
+        .btn-yt:hover { background-color: #dc2626; }
+
+        .btn-outline {
+            background-color: transparent;
+            border-color: var(--border-color);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background-color: var(--bg-card-hover); }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .badge-purple { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+
+        /* ==========================================================================
+           3. HEADER & NAVIGATION
+           ========================================================================== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-main);
+            border-bottom: 1px solid var(--border-color);
+            height: 65px;
+            display: flex;
+            align-items: center;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-purple);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color var(--transition-fast);
+        }
+        nav a:hover { color: var(--text-main); }
+
+        /* ==========================================================================
+           4. HERO & LIVE SUB COUNT
+           ========================================================================== */
+        .hero {
+            text-align: center;
+            padding-top: 50px;
+        }
+        .sub-box {
+            background-color: var(--bg-card);
+            border: 2px solid var(--accent-purple);
+            box-shadow: 0 0 20px var(--accent-glow);
+            border-radius: var(--radius-lg);
+            padding: 30px 20px;
+            margin: 24px auto;
+            max-width: 450px;
+        }
+        .sub-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+        .sub-number.bump {
+            animation: bump 0.25s ease-out;
+        }
+        @keyframes bump {
+            50% { transform: scale(1.05); color: var(--accent-purple); }
+        }
+
+        /* ==========================================================================
+           5. RECENT VIDEOS (LAZY EMBED)
+           ========================================================================== */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .video-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 0;
+            transition: border-color var(--transition-fast);
+        }
+        .video-card:hover { border-color: var(--accent-purple); }
+        .thumb-wrapper {
+            position: relative;
+            aspect-ratio: 16/9;
+            background-color: var(--bg-input);
+            cursor: pointer;
+        }
+        .thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: background var(--transition-fast), transform var(--transition-fast);
+        }
+        .thumb-wrapper:hover .play-btn {
+            background: var(--accent-red);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .video-info {
+            padding: 14px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .video-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        /* ==========================================================================
+           6. Q&A SECTION
+           ========================================================================== */
+        .qna-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 24px;
+        }
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        input, select, textarea {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-purple);
+        }
+        .qna-card {
+            margin-bottom: 14px;
+        }
+        .qna-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .qna-user { font-weight: 700; font-size: 0.9rem; }
+        .qna-answer {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: rgba(139, 92, 246, 0.08);
+            border-left: 3px solid var(--accent-purple);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-size: 0.88rem;
+        }
+        .like-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .like-btn:hover, .like-btn.liked {
+            color: var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+
+        /* ==========================================================================
+           7. SETTINGS & PREFERENCES
+           ========================================================================== */
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .setting-row:last-child { border-bottom: none; }
+        .toggle-sw {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-sw input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            transition: var(--transition-fast);
+        }
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            transition: var(--transition-fast);
+        }
+        input:checked + .slider { background-color: var(--accent-purple); border-color: var(--accent-purple); }
+        input:checked + .slider::before { transform: translateX(20px); background-color: #fff; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .qna-layout { grid-template-columns: 1fr; }
+            .sub-number { font-size: 2.8rem; }
+            section { padding: 24px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">👑</div>
+                <span>CROWN</span>
+            </a>
+            <nav>
+                <a href="#sub-count">Live Sub</a>
+                <a href="#videos">Video</a>
+                <a href="#qna">Q&A</a>
+                <a href="#settings">Impostazioni</a>
+            </nav>
+            <a href="https://www.youtube.com/@Cr0wn-FortNite?sub_confirmation=1" target="_blank" rel="noopener" class="btn btn-yt">
+                ISCRIVITI
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. LIVE SUBSCRIBER COUNT -->
+        <section id="sub-count" class="hero">
+            <span class="badge badge-purple">● Live YouTube Stats</span>
+            <h1 style="margin-top: 10px; font-size: 2.2rem; font-weight: 900;">CANALE UFFICIALE CROWN</h1>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Fortnite Content Creator & Player</p>
+
+            <div class="sub-box">
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Iscritti in Tempo Reale</div>
+                <div id="subNumber" class="sub-number">125,480</div>
+                <div style="margin-top: 14px;">
+                    <button id="simBtn" class="btn btn-outline" style="font-size: 0.8rem;">+1 Simula Iscritto</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. RECENT VIDEOS (TOP 5) -->
+        <section id="videos">
+            <div class="section-title">
+                <span>🔥 Ultimi 5 Video</span>
+                <a href="https://www.youtube.com/@Cr0wn-FortNite" target="_blank" rel="noopener" style="font-size: 0.85rem; color: var(--accent-purple); text-decoration: none;">Vedi canale →</a>
+            </div>
+            <div id="videoContainer" class="video-grid">
+                <!-- Video cards rendered via JS -->
+            </div>
+        </section>
+
+        <!-- 3. Q&A SECTION -->
+        <section id="qna">
+            <div class="section-title">💬 Domande & Risposte (Q&A)</div>
+            <div class="qna-layout">
+                
+                <!-- Form Box -->
+                <div class="card">
+                    <h3 style="margin-bottom: 14px; font-size: 1.1rem;">Fai una Domanda</h3>
+                    <form id="qForm">
+                        <div class="form-group">
+                            <label for="qName">Il tuo Username</label>
+                            <input type="text" id="qName" required placeholder="Es. Player123">
+                        </div>
+                        <div class="form-group">
+                            <label for="qText">La tua Domanda</label>
+                            <textarea id="qText" rows="3" required placeholder="Chiedi qualcosa a Crown..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Invia Domanda</button>
+                    </form>
+                </div>
+
+                <!-- Questions List -->
+                <div>
+                    <div id="qnaList">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PREFERENCES & SETTINGS -->
+        <section id="settings" style="margin-bottom: 40px;">
+            <div class="card">
+                <h3 style="margin-bottom: 10px; font-size: 1.1rem;">⚡ Prestazioni & Impostazioni</h3>
+                
+                <div class="setting-row">
+                    <div>
+                        <div style="font-weight: 700; font-size: 0.95rem;">Tema Scuro / Chiaro</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Attiva la modalità visiva preferita</div>
+                    </div>
+                    <label class="toggle-sw">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <div style="font-weight: 700; font-size: 0.95rem;">Disabilita Animazioni</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Ideale per massima fluidità su dispositivi datati</div>
+                    </div>
+                    <label class="toggle-sw">
+                        <input type="checkbox" id="animToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- LIGHTWEIGHT JAVASCRIPT LOGIC -->
+    <script>
+        // Data Store (Lightweight In-Memory)
+        const VIDEOS = [
+            { id: 'dQw4w9WgXcQ', title: 'NUOVA STAGIONE FORTNITE! Tutte le novità', views: '45K views', time: '2 giorni fa', thumb: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=500&q=60' },
+            { id: 'dQw4w9WgXcQ', title: 'SOLO VS SQUAD 20 KILL GAMEPLAY', views: '62K views', time: '5 giorni fa', thumb: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=60' },
+            { id: 'dQw4w9WgXcQ', title: 'COME MIGLIORARE L\'AIM IN 10 MINUTI', views: '89K views', time: '1 settimana fa', thumb: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=500&q=60' },
+            { id: 'dQw4w9WgXcQ', title: 'SKIN PIÙ RARA SBLOCCATA!', views: '34K views', time: '2 settimane fa', thumb: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=60' },
+            { id: 'dQw4w9WgXcQ', title: 'LE MIGLIORI IMPOSTAZIONI FORTNITE', views: '110K views', time: '3 settimane fa', thumb: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=500&q=60' }
+        ];
+
+        let qnaData = [
+            { id: 1, user: 'Matteo_FN', q: 'Quali sensibilità usi per Fortnite?', a: '800 DPI, 8.5% X/Y su PC!', likes: 24 },
+            { id: 2, user: 'Alex_Rider', q: 'Quando fai la prossima live?', a: 'Questo Sabato alle 16:30!', likes: 12 }
+        ];
+
+        let subCount = 125480;
+        let isAnimDisabled = false;
+
+        // DOM Elements
+        const subNumberEl = document.getElementById('subNumber');
+        const simBtn = document.getElementById('simBtn');
+        const videoContainer = document.getElementById('videoContainer');
+        const qnaList = document.getElementById('qnaList');
+        const qForm = document.getElementById('qForm');
+        const themeToggle = document.getElementById('themeToggle');
+        const animToggle = document.getElementById('animToggle');
+
+        // Init
+        document.addEven
